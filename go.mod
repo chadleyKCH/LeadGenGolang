@@ -6,6 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
 	github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG v0.0.0-20230320133423-98385db6003a
 	github.com/gocolly/colly v1.2.0
+	github.com/joho/godotenv v1.5.1
 	github.com/tealeg/xlsx v1.0.5
 	github.com/tebeka/selenium v0.9.9
 )

@@ -12,6 +12,7 @@ import (
 	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/genExports"
 	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/scrape"
 	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/search"
+	"github.com/joho/godotenv"
 	"github.com/tealeg/xlsx"
 )
 
@@ -129,4 +130,28 @@ func main() {
 		return
 	}
 
+}
+
+func init() {
+	godotenv.Load(".env")
+	// Check if ACCESS_KEY environment variable exists, exit if not found
+	if ACCESS_KEY = os.Getenv("ACCESS_KEY"); ACCESS_KEY == "" {
+		fmt.Println("No ACCESS_KEY Environment Variable Found")
+		os.Exit(1)
+	}
+	// Check if ACCOUNT environment variable exists, exit if not found
+	if ACCOUNT = os.Getenv("ACCOUNT"); ACCOUNT == "" {
+		fmt.Println("No ACCOUNT Environment Variable Found")
+		os.Exit(1)
+	}
+	// Check if CONTAINER_NAME environment variable exists, exit if not found
+	if CONTAINER_NAME = os.Getenv("CONTAINER_NAME"); CONTAINER_NAME == "" {
+		fmt.Println("No CONTAINER_NAME Environment Variable Found")
+		os.Exit(1)
+	}
+	// Check if CONTAINER_URL environment variable exists, exit if not found
+	if CONTAINER_URL = os.Getenv("CONTAINER_URL"); CONTAINER_URL == "" {
+		fmt.Println("No CONTAINER_URL Environment Variable Found")
+		os.Exit(1)
+	}
 }
