@@ -5,13 +5,14 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"lead-generator/storage"
 	"os"
 
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/blank"
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/genExports"
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/scrape"
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/search"
+	"lead-generator/blank"
+	"lead-generator/genExports"
+	"lead-generator/scrape"
+	"lead-generator/search"
+	"lead-generator/storage"
+
 	"github.com/joho/godotenv"
 	"github.com/tealeg/xlsx"
 )

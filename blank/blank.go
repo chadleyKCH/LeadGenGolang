@@ -1,8 +1,8 @@
 package blank
 
 import (
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/scrape"
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/search"
+	"lead-generator/scrape"
+	"lead-generator/search"
 )
 
 var (

@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG/src/search"
+	"lead-generator/search"
+
 	"github.com/gocolly/colly"
 )
 

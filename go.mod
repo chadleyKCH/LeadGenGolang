@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
-	github.com/chadleyKCH/LeadGenGolang/LeadGen_GOLANG v0.0.0-20230320133423-98385db6003a
+	github.com/Azure/azure-storage-blob-go v0.15.0
 	github.com/gocolly/colly v1.2.0
 	github.com/joho/godotenv v1.5.1
 	github.com/tealeg/xlsx v1.0.5
@@ -15,7 +15,6 @@ require (
 	github.com/Azure/azure-pipeline-go v0.2.3 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.3.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.1 // indirect
-	github.com/Azure/azure-storage-blob-go v0.15.0 // indirect
 	github.com/PuerkitoBio/goquery v1.8.1 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/antchfx/htmlquery v1.3.0 // indirect
@@ -29,7 +28,9 @@ require (
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/mattn/go-ieproxy v0.0.1 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
+	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
+	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect

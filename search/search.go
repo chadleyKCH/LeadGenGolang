@@ -48,7 +48,7 @@ func SearchThomasnet() {
 	if err != nil {
 		panic(err)
 	}
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 2)
 	// Define the button selector and search for its element.
 	search, err := driver.FindElement(selenium.ByCSSSelector, "#homesearch > form > div > button")
 	if err != nil {
@@ -70,7 +70,7 @@ func SearchThomasnet() {
 	if err != nil {
 		log.Fatalf("Failed to switch to iframe: %v", err)
 	}
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 2)
 	// Looks for accept button
 	acceptNoti, err := driver.FindElement(selenium.ByXPATH, "/html/body/appcues/cue/section/div/div[3]/div/div/div/div/div/a")
 	if err != nil {
@@ -86,7 +86,7 @@ func SearchThomasnet() {
 	if switchDefault != nil {
 		log.Fatalf("Error with switching the frame back: %v", switchDefault)
 	}
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 2)
 
 	// Checks if StateAbb is blank. If so, then return the driver URL to scrape.go
 	if StateAbb == "" {
@@ -103,7 +103,7 @@ func SearchThomasnet() {
 		if err != nil {
 			log.Fatalf("Could not click select region dropdown: %v", err)
 		}
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second * 2)
 		// Finds specified region
 		regionSelect, err := driver.FindElement(selenium.ByCSSSelector, "body > div.site-wrap.logged-out > header > div.site-header__section > div > div.site-header__section-header__utility > form > div > div > div.thm-custom-select.search-options-regions > div [data-value="+StateAbb+"]")
 		if err != nil {
@@ -119,7 +119,7 @@ func SearchThomasnet() {
 		if err != nil {
 			log.Fatalf("Could not click select region dropdown: %v", err)
 		}
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second * 2)
 		// Finds search button
 		regionSearch, err := driver.FindElement(selenium.ByCSSSelector, "body > div.site-wrap.logged-out > header > div.site-header__section > div > div.site-header__section-header__utility > form > div > button")
 		if err != nil {
@@ -130,7 +130,8 @@ func SearchThomasnet() {
 		if err != nil {
 			log.Fatalf("Could not click the selected region %v", err)
 		}
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second * 2)
+
 		results, err := driver.FindElement(selenium.ByCSSSelector, "body > div.site-wrap.interim-search-results.logged-out > section.network-search-results > div > div.network-search-results__primary > div > section > div")
 		if err != nil {
 			fmt.Println("Error finding Network Result ", err)
@@ -148,6 +149,7 @@ func SearchThomasnet() {
 		if err != nil {
 			log.Printf("Error with 'Located In' portion of the code: %v", err)
 		}
+		time.Sleep(time.Second * 2)
 		// If the 'Located in' option does not exist then it skips over...else: clicks located in
 		if LocIn != nil {
 			// Clicks 'Located in'
