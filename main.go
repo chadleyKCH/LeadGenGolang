@@ -154,4 +154,8 @@ func init() {
 		fmt.Println("No CONTAINER_URL Environment Variable Found")
 		os.Exit(1)
 	}
+	if RUN_ID = os.Getenv("RUN_ID"); RUN_ID == "" {
+		fmt.Println("No RUN_ID Environment Variable Found")
+		os.Exit(1)
+	}
 }
