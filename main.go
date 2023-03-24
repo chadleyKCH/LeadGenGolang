@@ -30,7 +30,7 @@ func main() {
 		os.Exit(1)
 	}
 	excel_body := bytes.Buffer{}
-	excel_body_file := "Lead_Template.xlsx"
+	excel_body_file := "Filled_Template.xlsx"
 	if err = S.Download(excel_body_file, &excel_body); err != nil {
 		fmt.Printf("Failed to download Excel Body File: %s from Blob Storage Error: %s\n", excel_body_file, err.Error())
 		os.Exit(1)

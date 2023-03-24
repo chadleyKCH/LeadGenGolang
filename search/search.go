@@ -16,7 +16,7 @@ var (
 )
 
 func SearchThomasnet() {
-	pathToChrome := "C:/Users/coleh/LeadGen GOLANG_2/chromedriver.exe" //The path to chromedriver. //set to chrome blob
+	pathToChrome := "C:/Users/coleh/VS_CODES/LG_Other/chromedriver.exe" //The path to chromedriver. //set to chrome blob
 
 	service, err := selenium.NewChromeDriverService(pathToChrome, 4444) //Initialize driver service with chromedriver.
 	if err != nil {
