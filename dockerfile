@@ -1,8 +1,9 @@
 # Build stage
 FROM golang:1.20.2-bullseye AS builder
 
-RUN apt-get update && apt-get install -y ca-certificates \
-    apt-get upgrade -y ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates
+    
+RUN apt-get upgrade -y ca-certificates
 
 # Install Chrome
 RUN apt-get update && \
