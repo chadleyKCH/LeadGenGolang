@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.20.2-bullseye AS builder
+FROM amd64/golang:latest AS builder
 
 RUN apt-get update && apt-get install -y ca-certificates
     
@@ -16,12 +16,18 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY . .
+COPY go.mod go.sum ./
+COPY blank ./blank
+COPY genExports ./genExports
+COPY scrape ./scrape
+COPY search ./search
+COPY storage ./storage
+COPY main.go ./
 
 RUN go build -o main .
 
 # Final stage
-FROM debian:bullseye-slim
+FROM amd64/alpine:latest
 COPY --from=builder /app/main /app/main
 
 # Set the default executable and entrypoint

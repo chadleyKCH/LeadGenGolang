@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"lead-generator/blank"
-	"lead-generator/genExports"
 	"lead-generator/scrape"
 	"lead-generator/search"
 	"lead-generator/storage"
@@ -76,7 +75,33 @@ func main() {
 
 		switch {
 		case search.Lead == "" && search.StateAbb != "":
-			genExports.GenExports()
+			// Download GenExports File
+			genExportsBuffer := bytes.Buffer{}
+			genExportsFile := "GeneralExports.xlsx"
+			if err = S.Download(genExportsFile, &genExportsBuffer); err != nil {
+				fmt.Printf("Failed to download GenExports File: %s from Blob Storage Error: %s\n", genExportsFile, err.Error())
+				os.Exit(1)
+			}
+			// Open GenExports Excel File
+			genExportsBytes := genExportsBuffer.Bytes()
+			genExports, err := xlsx.OpenBinary(genExportsBytes)
+			if err != nil {
+				fmt.Printf("Failed to open GenExports Excel file: %s", err.Error())
+				os.Exit(1)
+			}
+			// Iterate through the rows in the first sheet of GenExports
+			sheet := genExports.Sheets[0]
+			for i := 1; i < len(sheet.Rows); i++ {
+				row := sheet.Rows[i]
+				// If the first cell in the row is empty, break the loop
+				if row.Cells[0].Value == "" {
+					break
+				}
+				// Set the Lead value and perform search and scrape operations
+				search.Lead = row.Cells[0].Value
+				search.SearchThomasnet()
+				scrape.ScrapeWebsite()
+			}
 			continue
 		case search.Lead != "" && search.StateAbb == "":
 			search.SearchThomasnet()
