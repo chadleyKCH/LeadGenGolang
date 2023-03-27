@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 
 	"lead-generator/blank"
 	"lead-generator/scrape"
@@ -149,13 +150,20 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-
+	fmt.Println("===================================")
+	fmt.Println("          Uploading Leads          ")
+	fmt.Println("===================================")
+	for i := 1; i <= 100; i += 11 {
+		fmt.Printf("\r[%-10s] %d%%", progressBar(i), i)
+		time.Sleep(250 * time.Millisecond)
+	}
 	// Upload the leadsFile to Azure using the S.Upload method and handle any errors that occur
 	if err := S.Upload(leadsFile, &outputBuffer); err != nil {
 		fmt.Printf("Failed to upload output file to Azure: %s\n", err.Error())
 		return
 	}
 
+	fmt.Println("\n\nUpload Complete!")
 }
 
 func init() {
@@ -184,4 +192,12 @@ func init() {
 		fmt.Println("No RUN_ID Environment Variable Found")
 		os.Exit(1)
 	}
+}
+
+func progressBar(percentage int) string {
+	bar := ""
+	for i := 0; i < percentage/10; i++ {
+		bar += "="
+	}
+	return bar
 }
