@@ -11,7 +11,7 @@ import (
 )
 
 type company_chrome struct {
-	companyName, companyDesc, companyLoc string
+	companyName, companyDesc, companyLoc, companyType string
 }
 
 var (
@@ -20,6 +20,9 @@ var (
 	File     *os.File
 	BlobName = "Leads.csv"
 )
+
+// COMPLETED
+// Scrapes the specified lead on Thomasnet and then returns the results
 
 func ScrapeWebsite() {
 	// Use colly.NewCollector to create a new Collector instance
@@ -41,19 +44,19 @@ func ScrapeWebsite() {
 		// Create a variable called company of type company_card
 		company := company_chrome{}
 		company.companyName = e.ChildText("h2.profile-card__title")
-		// fmt.Println(company.companyName)
-		company.companyDesc = e.ChildText("div.profile-card__body-text p")
-		// fmt.Println(company.companyDesc)
 		company.companyLoc = e.ChildText("span.profile-card__location a")
-		// fmt.Println(company.companyLoc)
+		company.companyType = e.ChildText("span[data-content=\"Company Type\"]")
+		company.companyDesc = e.ChildText("div.profile-card__body-text p")
+
 		// Append the newly created company variable to the existing companys slice
 		companys = append(companys, company)
 		// Write the values stored inside the most recently created company variable to the CSV file
 		if len(companys) != 0 {
 			leads := []string{
 				company.companyName,
-				company.companyDesc,
 				company.companyLoc,
+				company.companyType,
+				company.companyDesc,
 			}
 			Writer.Write(leads)
 			Writer.Flush()

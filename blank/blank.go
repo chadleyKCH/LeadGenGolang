@@ -9,6 +9,9 @@ var (
 	Header []string
 )
 
+// COMPLETED
+// Different functions for each state
+
 func TXstate() {
 	if search.StateAbb == "TX" {
 		search.StateAbb = "NT"

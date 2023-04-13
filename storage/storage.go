@@ -16,6 +16,9 @@ type BlobStorage struct {
 	container_name string
 }
 
+// COMPLETED
+// Storge courtesy of JohnGPT
+
 func NewBlobStorageConn(container_url, account_name, key, container string) (*BlobStorage, error) {
 	endp, err := url.Parse(container_url)
 	if err != nil {
