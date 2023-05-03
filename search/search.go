@@ -3,10 +3,10 @@ package search
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/tebeka/selenium"
-	"github.com/tebeka/selenium/chrome"
 )
 
 var (
@@ -15,32 +15,46 @@ var (
 	Lead      string
 )
 
-// NOT COMPLETED
-// NewChromeDriverService is not working correctly
-
 func SearchThomasnet() {
-	pathToChrome := "C:/Users/coleh/VS_CODES/LG_Other/chromedriver.exe"
 
-	// Error with NewChromeDriverService. Server port not found on 4444. Also, not found on any other ports.
-	service, err := selenium.NewChromeDriverService(pathToChrome, 4444)
+	const (
+		// These paths will be different on your system.
+		// chromeDriverPath = "C:/Users/coleh/VS_CODES/LG_Other/chromedriver.exe"
+		chromeDriverPath = "/usr/local/bin/chromedriver"
+		port             = 4445
+	)
+
+	// Start a Selenium WebDriver server instance (if one is not already
+	// running).
+	opts := []selenium.ServiceOption{
+		selenium.ChromeDriver(chromeDriverPath),
+		selenium.Output(os.Stderr),
+	}
+	service, err := selenium.NewChromeDriverService(chromeDriverPath, port, opts...)
 	if err != nil {
 		panic(err)
 	}
 	defer service.Stop()
-	caps := selenium.Capabilities{}
-	caps.AddChrome(chrome.Capabilities{Args: []string{
-		"window-size=1920x1080",
-		"--no-sandbox",
-		"--disable-dev-shm-usage",
-		"disable-gpu",
-		"--headless",
-	}})
-	driver, err := selenium.NewRemote(caps, "")
-	if err != nil {
-		panic(err)
+
+	// Connect to the WebDriver instance running locally.
+	caps := selenium.Capabilities{
+		"browserName": "chrome",
+		"goog:chromeOptions": map[string]interface{}{
+			"args": []string{
+				"--headless",
+				"--disable-gpu",
+				"--no-sandbox",
+				"--disable-dev-shm-usage",
+			},
+		},
 	}
-	driver.Get("https://www.thomasnet.com/")
-	time.Sleep(time.Second * 4)
+	P := 4445
+	driver, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", P))
+	if err != nil {
+		log.Fatal("COULDN'T START NEW SELENIUM REMOTE")
+	}
+	driver.Get("http://www.thomasnet.com/")
+	time.Sleep(time.Second * 3)
 	// Select the Search bar
 	input, err := driver.FindElement(selenium.ByCSSSelector, "#homesearch > form > div > div > div.site-search__search-query-input-wrap.search-suggest-preview > input")
 	if err != nil {
@@ -64,32 +78,32 @@ func SearchThomasnet() {
 	}
 	time.Sleep(time.Second * 2)
 	// Looks for iframe
-	iframeElem, err := driver.FindElement(selenium.ByCSSSelector, "iframe[src*='about:blank']")
-	if err != nil {
-		log.Fatalf("FAILED TO FIND THE IFRAME ELEMENT: %v", err)
-	}
-	// Switches to iframe
-	err = driver.SwitchFrame(iframeElem)
-	if err != nil {
-		log.Fatalf("FAILED TO SWITCH TO THE IFRAME: %v", err)
-	}
-	time.Sleep(time.Second * 2)
-	// Looks for accept button
-	acceptNoti, err := driver.FindElement(selenium.ByXPATH, "/html/body/appcues/cue/section/div/div[3]/div/div/div/div/div/a")
-	if err != nil {
-		log.Fatalf("FAILED TO FIND THE IFRAME ACCEPT BUTTON: %v", err)
-	}
-	// Clicks accept button
-	err = acceptNoti.Click()
-	if err != nil {
-		log.Fatalf("FAILED TO CLICK THE IFRAME ACCEPT BUTTON: %v", err)
-	}
-	// Switches back to main frame
-	switchDefault := driver.SwitchFrame(nil)
-	if switchDefault != nil {
-		log.Fatalf("FAILED TO SWITCH BACK TO MAIN FRAME: %v", switchDefault)
-	}
-	time.Sleep(time.Second * 2)
+	// iframeElem, err := driver.FindElement(selenium.ByCSSSelector, "iframe[src*='about:blank']")
+	// if err != nil {
+	// 	log.Fatalf("FAILED TO FIND THE IFRAME ELEMENT: %v", err)
+	// }
+	// // Switches to iframe
+	// err = driver.SwitchFrame(iframeElem)
+	// if err != nil {
+	// 	log.Fatalf("FAILED TO SWITCH TO THE IFRAME: %v", err)
+	// }
+	// time.Sleep(time.Second * 2)
+	// // Looks for accept button
+	// acceptNoti, err := driver.FindElement(selenium.ByXPATH, "/html/body/appcues/cue/section/div/div[3]/div/div/div/div/div/a")
+	// if err != nil {
+	// 	log.Fatalf("FAILED TO FIND THE IFRAME ACCEPT BUTTON: %v", err)
+	// }
+	// // Clicks accept button
+	// err = acceptNoti.Click()
+	// if err != nil {
+	// 	log.Fatalf("FAILED TO CLICK THE IFRAME ACCEPT BUTTON: %v", err)
+	// }
+	// // Switches back to main frame
+	// switchDefault := driver.SwitchFrame(nil)
+	// if switchDefault != nil {
+	// 	log.Fatalf("FAILED TO SWITCH BACK TO MAIN FRAME: %v", switchDefault)
+	// }
+	// time.Sleep(time.Second * 2)
 
 	// Checks if StateAbb is blank. If so, then return the driver URL to scrape.go
 	if StateAbb == "" {
@@ -138,7 +152,7 @@ func SearchThomasnet() {
 
 		results, err := driver.FindElement(selenium.ByCSSSelector, "body > div.site-wrap.interim-search-results.logged-out > section.network-search-results > div > div.network-search-results__primary > div > section > div")
 		if err != nil {
-			log.Fatalf("COULD NOT FIND NETWORK RESULT: %v", err)
+			fmt.Printf("COULD NOT FIND NETWORK RESULT: %v", err)
 		}
 		if results != nil {
 			err = results.Click()

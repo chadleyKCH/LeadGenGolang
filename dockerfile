@@ -1,63 +1,41 @@
-# Build stage
-FROM golang:latest AS builder
+# Use the official Golang image as the base image
+FROM golang:latest
 
-WORKDIR /app
-
-COPY . .
-
-# Install dependencies for using chrome and chromedriver
+# Install necessary dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        wget \
-        unzip \
-        libxss1 \
-        libappindicator1 \
-        libnss3 \
-        libasound2 \
-        libgconf-2-4 \
-        lsb-release \
-        fonts-liberation \
-        xdg-utils \
-        openjdk-11-jre-headless
+    apt-get install -y wget unzip curl default-jdk
 
 # Install Google Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt install -y ./google-chrome-stable_current_amd64.deb && \
-    rm google-chrome-stable_current_amd64.deb
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable
 
-RUN mv /usr/bin/google-chrome-stable /usr/local/bin/google-chrome
+# Install ChromeDriver
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION && \
+    curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
+    unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver-$CHROMEDRIVER_VERSION && \
+    rm /tmp/chromedriver_linux64.zip && \
+    chmod +x /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver && \
+    ln -fs /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver /usr/local/bin/chromedriver
 
-# Install chromedriver
-RUN wget -N https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip && \
-    unzip chromedriver_linux64.zip && \
-    chmod +x chromedriver && \
-    mv chromedriver /usr/local/bin/ && \
-    rm chromedriver_linux64.zip
+# Install Selenium standalone server
+RUN mkdir /opt/selenium && \
+    curl -sS -o /opt/selenium/selenium-server-standalone.jar http://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar
 
-RUN wget https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar && \
-    echo "java -jar selenium-server-standalone-3.141.59.jar &" > /usr/local/bin/start-selenium && \
-    chmod +x /usr/local/bin/start-selenium
+# Set the working directory
+WORKDIR /app
 
-# Build the Go binary
-RUN go mod tidy
+# Copy your Go program's source code
+COPY . .
+
+# Build your Go program
 RUN go build -o main .
 
-# Start a new stage to minimize the final image size
-FROM gcr.io/distroless/base-debian10
-
-# Copy files from the builder stage
-COPY --from=builder /usr/local/bin/google-chrome /usr/local/bin/google-chrome
-COPY --from=builder /usr/local/bin/chromedriver /usr/local/bin/chromedriver
-COPY --from=builder /app/main /app/main
-COPY --from=builder /usr/local/bin/start-selenium /usr/local/bin/start-selenium
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-
-# Set the default executable and entrypoint
-WORKDIR /app
-ENTRYPOINT ["/usr/local/bin/start-selenium"]
-CMD ["-port", "4444"]
-
-# Expose the Selenium server port
+# Expose the Selenium standalone server port (default is 4444)
 EXPOSE 4444
-EXPOSE 8080
+EXPOSE 4445
+
+# Start the Selenium standalone server and your Go program
+CMD java -jar /opt/selenium/selenium-server-standalone.jar & sleep 10 && ./main
