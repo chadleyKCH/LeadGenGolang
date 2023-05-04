@@ -28,12 +28,6 @@ func main() {
 	fmt.Println("             STARTING...           ")
 	fmt.Println("===================================")
 
-	// CONTAINER_URL = "https://pdfprocessorb154.blob.core.windows.net/"
-	// ACCOUNT = "pdfprocessorb154"
-	// ACCESS_KEY = "WsiObOxvTojg7bR7KHhjIyw6MpPgFP/ZCR949P+QyQqoef0oiSyFo7Qot/TbF9MZ+Mldp+yLloIH+AStzAaBzA=="
-	// CONTAINER_NAME = "lead-generator"
-	// RUN_ID = "testRUN_ID"
-
 	// Connect to storage blob
 	S, err := storage.NewBlobStorageConn(CONTAINER_URL, ACCOUNT, ACCESS_KEY, CONTAINER_NAME)
 	if err != nil {

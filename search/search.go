@@ -20,8 +20,10 @@ func SearchThomasnet() {
 	const (
 		// These paths will be different on your system.
 		// chromeDriverPath = "C:/Users/coleh/VS_CODES/LG_Other/chromedriver.exe"
-		chromeDriverPath = "/usr/local/bin/chromedriver"
-		port             = 4445
+		chromeDriverPath = "/usr/lib/chromium/chromedriver"
+
+		// chromeDriverPath = "/usr/local/bin/chromedriver"
+		port = 4445
 	)
 
 	// Start a Selenium WebDriver server instance (if one is not already
@@ -53,8 +55,8 @@ func SearchThomasnet() {
 	if err != nil {
 		log.Fatal("COULDN'T START NEW SELENIUM REMOTE")
 	}
-	driver.Get("http://www.thomasnet.com/")
-	time.Sleep(time.Second * 3)
+	driver.Get("https://www.thomasnet.com/")
+	time.Sleep(time.Second * 10)
 	// Select the Search bar
 	input, err := driver.FindElement(selenium.ByCSSSelector, "#homesearch > form > div > div > div.site-search__search-query-input-wrap.search-suggest-preview > input")
 	if err != nil {
