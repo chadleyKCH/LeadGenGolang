@@ -9,7 +9,7 @@ var (
 	Header []string
 )
 
-// COMPLETED
+// COMPLETE
 // Different functions for each state
 
 func TXstate() {
@@ -20,6 +20,7 @@ func TXstate() {
 		search.StateAbb = "GT"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "TX"
 	}
 	if search.StateAbb == "TX - N" {
 		search.StateAbb = "NT"
@@ -41,6 +42,7 @@ func CAstate() {
 		search.StateAbb = "CS"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "CA"
 	}
 	if search.StateAbb == "CA - N" {
 		search.StateAbb = "CN"
@@ -62,6 +64,7 @@ func MAstate() {
 		search.StateAbb = "WM"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "MA"
 	}
 	if search.StateAbb == "MA - E" {
 		search.StateAbb = "EM"
@@ -83,6 +86,7 @@ func NJstate() {
 		search.StateAbb = "JS"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "NJ"
 	}
 	if search.StateAbb == "NJ - N" {
 		search.StateAbb = "JN"
@@ -104,6 +108,7 @@ func NYstate() {
 		search.StateAbb = "UN"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "NY"
 	}
 	if search.StateAbb == "NY - M" {
 		search.StateAbb = "DN"
@@ -125,6 +130,7 @@ func OHstate() {
 		search.StateAbb = "SO"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "OH"
 	}
 	if search.StateAbb == "OH - N" {
 		search.StateAbb = "NO"
@@ -146,6 +152,7 @@ func PAstate() {
 		search.StateAbb = "WP"
 		search.SearchThomasnet()
 		scrape.ScrapeWebsite()
+		search.StateAbb = "PA"
 	}
 	if search.StateAbb == "PA - E" {
 		search.StateAbb = "EP"
